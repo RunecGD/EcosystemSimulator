@@ -1,5 +1,5 @@
 package Ecosystem;
-
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,31 +12,26 @@ public class Ecosystem {
         this.animals = new ArrayList<>();
     }
 
-    // Добавление растений
     public void addPlant(Plant plant) {
         plants.add(plant);
     }
 
-    // Чтение всех растений
     public List<Plant> getPlants() {
         return plants;
     }
 
-    // Обновление растения
     public void updatePlant(int index, Plant plant) {
         if (index >= 0 && index < plants.size()) {
             plants.set(index, plant);
         }
     }
 
-    // Удаление растения
     public void removePlant(int index) {
         if (index >= 0 && index < plants.size()) {
             plants.remove(index);
         }
     }
 
-    // То же для животных
     public void addAnimal(Animal animal) {
         animals.add(animal);
     }
@@ -55,5 +50,48 @@ public class Ecosystem {
         if (index >= 0 && index < animals.size()) {
             animals.remove(index);
         }
+    }
+
+    // Сохранение в файл
+    public void saveToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            // Сохранение растений
+            writer.write("Plants:\n");
+            for (Plant plant : plants) {
+                writer.write(plant.getName() + "," + plant.getGrowthRate() + "\n");
+            }
+            // Сохранение животных
+            writer.write("Animals:\n");
+            for (Animal animal : animals) {
+                writer.write(animal.getName() + "," + animal.getSpecies() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Загрузка из файла
+    public static Ecosystem loadFromFile(String filename) {
+        Ecosystem ecosystem = new Ecosystem();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            // Чтение растений
+            if ((line = reader.readLine()) != null && line.equals("Plants:")) {
+                while ((line = reader.readLine()) != null && !line.equals("Animals:")) {
+                    String[] parts = line.split(",");
+                    ecosystem.addPlant(new Plant(parts[0], Integer.parseInt(parts[1])));
+                }
+            }
+            // Чтение животных
+            if (line.equals("Animals:")) {
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    ecosystem.addAnimal(new Animal(parts[0], parts[1]));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ecosystem;
     }
 }

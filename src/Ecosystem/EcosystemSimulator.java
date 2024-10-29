@@ -18,6 +18,8 @@ public class EcosystemSimulator {
             System.out.println("6. View Animals");
             System.out.println("7. Update Animal");
             System.out.println("8. Remove Animal");
+            System.out.println("9. Save Ecosystem");
+            System.out.println("10. Load Ecosystem");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             choice = scanner.nextInt();
@@ -90,8 +92,37 @@ public class EcosystemSimulator {
                     ecosystem.removeAnimal(removeAnimalIndex);
                     break;
 
+                case 9: // Save Ecosystem
+                    System.out.print("Enter filename to save: ");
+                    String saveFilename = scanner.nextLine();
+                    ecosystem.saveToFile(saveFilename);
+                    System.out.println("Ecosystem saved to " + saveFilename);
+                    break;
+
+                case 10: // Load Ecosystem
+                    System.out.print("Enter filename to load: ");
+                    String loadFilename = scanner.nextLine();
+                    ecosystem = Ecosystem.loadFromFile(loadFilename);
+                    System.out.println("Ecosystem loaded from " + loadFilename);
+                    break;
+
                 case 0:
                     System.out.println("Exiting...");
+                    break;
+                case 11: // Check if animal can eat plant
+                    System.out.print("Enter animal index: ");
+                    int animalIdx = scanner.nextInt();
+                    System.out.print("Enter plant index: ");
+                    int plantIdx = scanner.nextInt();
+
+                    Animal animalToCheck = ecosystem.getAnimals().get(animalIdx);
+                    Plant plantToCheck = ecosystem.getPlants().get(plantIdx);
+
+                    if (animalToCheck.canEat(plantToCheck)) {
+                        System.out.println(animalToCheck.getName() + " can eat " + plantToCheck.getName());
+                    } else {
+                        System.out.println(animalToCheck.getName() + " cannot eat " + plantToCheck.getName());
+                    }
                     break;
 
                 default:

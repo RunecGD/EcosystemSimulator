@@ -16,6 +16,10 @@ public class Animal {
     public String getSpecies() {
         return species;
     }
+    public boolean canEat(Plant plant) {
+        // Пример: все животные могут есть растения с определенной скоростью роста
+        return plant.getGrowthRate() < 10; // Условие для примера
+    }
 
     @Override
     public String toString() {
