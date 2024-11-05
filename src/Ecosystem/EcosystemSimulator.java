@@ -20,6 +20,7 @@ public class EcosystemSimulator {
             System.out.println("8. Remove Animal");
             System.out.println("9. Save Ecosystem");
             System.out.println("10. Load Ecosystem");
+            System.out.println("11. Check if animal can eat plant");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             choice = scanner.nextInt();
